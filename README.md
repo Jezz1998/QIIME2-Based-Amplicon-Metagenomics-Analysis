@@ -54,9 +54,41 @@ Visualization and Interpretation
 
 ## Analysis Steps
 
-### 1. Import FASTQ Data
+### 1. Import FASTQ Data - Import Data via Manifest File
 
-Raw FASTQ files were imported into QIIME2 artifact format (.qza) for downstream analysis.
+First, create a manifest file (`manifest.tsv`) using the following format:
+
+```tsv
+sample-id	forward-absolute-filepath	reverse-absolute-filepath
+sample-1	/path/to/project/sample1_forward.fastq.gz	/path/to/project/sample1_reverse.fastq.gz
+sample-2	/path/to/project/sample2_forward.fastq.gz	/path/to/project/sample2_reverse.fastq.gz
+sample-3	/path/to/project/sample3_forward.fastq.gz	/path/to/project/sample3_reverse.fastq.gz
+sample-4	/path/to/project/sample4_forward.fastq.gz	/path/to/project/sample4_reverse.fastq.gz
+sample-5	/path/to/project/sample5_forward.fastq.gz	/path/to/project/sample5_reverse.fastq.gz
+sample-6	/path/to/project/sample6_forward.fastq.gz	/path/to/project/sample6_reverse.fastq.gz
+sample-7	/path/to/project/sample7_forward.fastq.gz	/path/to/project/sample7_reverse.fastq.gz
+sample-8	/path/to/project/sample8_forward.fastq.gz	/path/to/project/sample8_reverse.fastq.gz
+sample-9	/path/to/project/sample9_forward.fastq.gz	/path/to/project/sample9_reverse.fastq.gz
+sample-10	/path/to/project/sample10_forward.fastq.gz	/path/to/project/sample10_reverse.fastq.gz
+```
+
+Replace `/path/to/project/` with the actual absolute path to your FASTQ files on your local system.
+
+After creating the manifest file, import the paired-end sequence data into QIIME2 artifact format (`.qza`) using:
+
+```bash
+qiime tools import \
+  --type 'SampleData[PairedEndSequencesWithQuality]' \
+  --input-path  /path/to/manifest.tsv \
+  --output-path paired-end-demux.qza \
+  --input-format PairedEndFastqManifestPhred33V2
+```
+
+This will generate the imported QIIME2 artifact file:
+
+```text
+paired-end-demux.qza
+```
 
 ### 2. Quality Control using DADA2
 
