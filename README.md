@@ -89,6 +89,30 @@ This will generate the imported QIIME2 artifact file:
 ```text
 paired-end-demux.qza
 ```
+After generating the imported QIIME2 artifact file (`paired-end-demux.qza`), it is useful to generate a summary of the sequence data.
+
+This helps to:
+
+* Determine how many sequences were obtained per sample
+* Examine the distribution of sequence quality scores at each position
+* Decide appropriate trimming and truncation parameters for DADA2 denoising
+
+Use the following command to generate the summary visualization:
+
+```bash
+qiime demux summarize \
+  --i-data /path/to/paired-end-demux.qza \
+  --o-visualization demux.qzv
+```
+
+This will generate the visualization file:
+
+```text
+demux.qzv
+```
+You can view this file using QIIME2 View:
+
+https://view.qiime2.org
 
 ### 2. Quality Control using DADA2
 
