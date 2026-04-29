@@ -239,7 +239,7 @@ unrooted-tree.qza
 rooted-tree.qza
 ```
 
-### 5. ## Alpha and Beta Diversity Analysis
+### 5. Alpha and Beta Diversity Analysis
 
 QIIME2 diversity analyses were performed using the `q2-diversity` plugin, which supports:
 
@@ -359,22 +359,79 @@ weighted_unifrac_emperor.qzv
 ```
 
 
-### 5. Beta Diversity Analysis
+### 6. ## Alpha Rarefaction Analysis
 
-Beta diversity analysis was performed to compare microbial community composition between samples.
+Alpha rarefaction analysis was performed using the `qiime diversity alpha-rarefaction` visualizer to evaluate alpha diversity as a function of sequencing depth.
 
-Examples:
+This analysis helps determine whether the sequencing depth was sufficient to capture the microbial richness present in the samples.
 
-* Bray-Curtis Distance
-* Jaccard Distance
-* UniFrac Analysis
-* PCoA Visualization
+The visualizer computes one or more alpha diversity metrics at multiple sampling depths, ranging from low depth values up to the specified maximum depth.
 
-### 6. Alpha Rarefaction
+At each depth:
 
-Rarefaction analysis was performed to evaluate sequencing depth sufficiency.
+* Multiple rarefied tables are generated
+* Diversity metrics are calculated for all samples
+* Average diversity values are plotted for comparison
 
-### 7. Taxonomic Classification
+Sample grouping based on metadata can also be visualized when a metadata file is provided.
+
+---
+
+## Run Alpha Rarefaction Analysis
+
+```bash id="1yxb4u"
+qiime diversity alpha-rarefaction \
+  --i-table table.qza \
+  --i-phylogeny rooted-tree.qza \
+  --p-max-depth 10000 \
+  --m-metadata-file sample-metadata.tsv \
+  --o-visualization alpha-rarefaction.qzv
+```
+
+---
+
+## Output Visualization
+
+```text id="syf8fw"
+alpha-rarefaction.qzv
+```
+
+---
+
+## Interpretation of the Rarefaction Plot
+
+The visualization contains two important plots:
+
+## a. Top Plot - Alpha Rarefaction Curve
+
+This plot is primarily used to determine whether the richness of the samples has been fully observed.
+
+If the curves begin to **level out** (approach a slope of zero), this suggests that additional sequencing would likely not reveal many new features.
+
+If the curves do **not level out**, it may indicate:
+
+* Insufficient sequencing depth
+* Remaining sequencing errors being interpreted as false diversity
+
+This plot helps validate whether the chosen sampling depth is biologically meaningful.
+
+---
+
+## b. Bottom Plot - Sample Retention by Depth
+
+This plot shows how many samples remain available at each rarefaction depth.
+
+If the sampling depth exceeds the total sequence count of a sample, that sample is excluded from diversity calculations.
+
+This is especially important when comparing groups using metadata because:
+
+* Too high a sampling depth may remove many samples
+* Too few remaining samples can make diversity comparisons unreliable
+
+Therefore, both plots should be evaluated together when selecting the optimal rarefaction depth.
+
+
+## 7 . Taxonomic Classification
 
 Taxonomic assignment was performed to identify microbial composition across samples.
 
