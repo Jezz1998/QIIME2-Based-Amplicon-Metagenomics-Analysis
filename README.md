@@ -145,7 +145,7 @@ representative-sequences.qza
 table.qza
 denoising-stats.qza
 
-## Feature Table and Feature Data Summaries
+### 3. Feature Table and Feature Data Summaries
 
 After the quality filtering step is completed, it is important to explore the resulting data using summary visualizations.
 
@@ -164,7 +164,7 @@ These summaries help to:
   * Merged reads
   * Non-chimeric reads from total input sequences
 
-### a. DADA2 Denoising Statistics Summary
+## a. DADA2 Denoising Statistics Summary
 
 ```bash id="ngg2cw"
 qiime metadata tabulate \
@@ -172,7 +172,7 @@ qiime metadata tabulate \
   --o-visualization denoising-stats.qzv
 ```
 
-### b. Feature Table Summary
+## b. Feature Table Summary
 
 ```bash id="xvweja"
 qiime feature-table summarize \
@@ -181,7 +181,7 @@ qiime feature-table summarize \
   --m-sample-metadata-file sample-metadata.tsv
 ```
 
-### c. Representative Sequences Summary
+## c. Representative Sequences Summary
 
 ```bash id="nmwbm6"
 qiime feature-table tabulate-seqs \
@@ -198,14 +198,46 @@ representative-sequences.qzv
 ```
 
 
-### 3. Phylogenetic Tree Construction
+### 4. ## Generate a Phylogenetic Tree for Diversity Analysis
 
-A phylogenetic tree was generated for phylogenetic diversity analysis using:
+QIIME2 supports several phylogenetic diversity metrics, including:
 
-* Multiple sequence alignment
-* Masking
-* Tree construction
-* Rooted tree generation
+* Faith’s Phylogenetic Diversity
+* Weighted UniFrac
+* Unweighted UniFrac
+
+In addition to the feature count table (`FeatureTable[Frequency]`), these analyses require a rooted phylogenetic tree that describes the evolutionary relationships among the observed features (ASVs).
+
+This information is stored as a `Phylogeny[Rooted]` QIIME2 artifact.
+
+To generate the phylogenetic tree, the `align-to-tree-mafft-fasttree` pipeline from the `q2-phylogeny` plugin was used.
+
+This pipeline performs the following steps:
+
+1. Multiple sequence alignment using **MAFFT**
+2. Masking highly variable positions to reduce noise
+3. Tree construction using **FastTree**
+4. Midpoint rooting to generate a rooted phylogenetic tree
+
+Run the following command:
+
+```bash id="m0ajzy"
+qiime phylogeny align-to-tree-mafft-fasttree \
+  --i-sequences representative-sequences.qza \
+  --o-alignment aligned-rep-seqs.qza \
+  --o-masked-alignment masked-aligned-rep-seqs.qza \
+  --o-tree unrooted-tree.qza \
+  --o-rooted-tree rooted-tree.qza
+```
+
+This will generate:
+
+```text id="prz4y9"
+aligned-rep-seqs.qza
+masked-aligned-rep-seqs.qza
+unrooted-tree.qza
+rooted-tree.qza
+```
 
 ### 4. Alpha Diversity Analysis
 
