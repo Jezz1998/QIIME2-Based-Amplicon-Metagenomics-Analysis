@@ -198,7 +198,7 @@ representative-sequences.qzv
 ```
 
 
-### 4. ## Generate a Phylogenetic Tree for Diversity Analysis
+### 4. Generate a Phylogenetic Tree for Diversity Analysis
 
 QIIME2 supports several phylogenetic diversity metrics, including:
 
@@ -239,16 +239,125 @@ unrooted-tree.qza
 rooted-tree.qza
 ```
 
-### 4. Alpha Diversity Analysis
+### 5. ## Alpha and Beta Diversity Analysis
 
-Alpha diversity metrics were calculated to evaluate within-sample diversity.
+QIIME2 diversity analyses were performed using the `q2-diversity` plugin, which supports:
 
-Examples:
+* Alpha diversity metric calculation
+* Beta diversity metric calculation
+* Statistical testing
+* Interactive PCoA visualization using Emperor
 
-* Shannon Diversity Index
-* Observed Features
-* Faith’s Phylogenetic Diversity
-* Pielou’s Evenness
+The `core-metrics-phylogenetic` method was used to rarefy the feature table to a fixed sampling depth, calculate multiple diversity metrics, and generate PCoA plots for beta diversity analysis.
+
+---
+
+## Alpha Diversity Metrics
+
+The following alpha diversity metrics were calculated:
+
+* **Shannon’s Diversity Index**
+  A quantitative measure of community richness
+
+* **Observed Features**
+  A qualitative measure of community richness
+
+* **Faith’s Phylogenetic Diversity**
+  A qualitative richness measure incorporating phylogenetic relationships
+
+* **Pielou’s Evenness**
+  A measure of community evenness
+
+---
+
+## Beta Diversity Metrics
+
+The following beta diversity metrics were calculated:
+
+* **Jaccard Distance**
+  A qualitative measure of community dissimilarity
+
+* **Bray-Curtis Distance**
+  A quantitative measure of community dissimilarity
+
+* **Unweighted UniFrac Distance**
+  A qualitative phylogenetic dissimilarity measure
+
+* **Weighted UniFrac Distance**
+  A quantitative phylogenetic dissimilarity measure
+
+---
+
+## Choosing Sampling Depth
+
+An important parameter for this analysis is:
+
+```text id="r2k6v0"
+--p-sampling-depth
+```
+
+This defines the even sampling (rarefaction) depth.
+
+Since diversity metrics are sensitive to unequal sequencing depth across samples, QIIME2 randomly subsamples reads from each sample to the specified depth.
+
+In this analysis:
+
+```text id="0x1r5z"
+--p-sampling-depth 10000
+```
+
+was selected based on the sequence distribution observed in `table.qzv`.
+
+Samples containing fewer than 10,000 sequences were excluded from downstream diversity analysis.
+
+---
+
+## Run Core Diversity Analysis
+
+```bash id="y7v6zt"
+qiime diversity core-metrics-phylogenetic \
+  --i-phylogeny rooted-tree.qza \
+  --i-table table.qza \
+  --p-sampling-depth 10000 \
+  --m-metadata-file metadata.tsv \
+  --output-dir core-metrics-results
+```
+
+---
+
+## Output Artifacts
+
+This command generates multiple QIIME2 artifacts including:
+
+```text id="jlwm7g"
+faith_pd_vector.qza
+shannon_vector.qza
+observed_features_vector.qza
+evenness_vector.qza
+jaccard_distance_matrix.qza
+bray_curtis_distance_matrix.qza
+unweighted_unifrac_distance_matrix.qza
+weighted_unifrac_distance_matrix.qza
+jaccard_pcoa_results.qza
+bray_curtis_pcoa_results.qza
+unweighted_unifrac_pcoa_results.qza
+weighted_unifrac_pcoa_results.qza
+rarefied_table.qza
+```
+
+---
+
+## Output Visualizations
+
+Interactive Emperor PCoA plots are also generated:
+
+```text id="2prz3f"
+jaccard_emperor.qzv
+bray_curtis_emperor.qzv
+unweighted_unifrac_emperor.qzv
+weighted_unifrac_emperor.qzv
+```
+
 
 ### 5. Beta Diversity Analysis
 
