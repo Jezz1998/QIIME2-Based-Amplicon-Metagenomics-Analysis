@@ -359,7 +359,7 @@ weighted_unifrac_emperor.qzv
 ```
 
 
-### 6. ## Alpha Rarefaction Analysis
+### 6. Alpha Rarefaction Analysis
 
 Alpha rarefaction analysis was performed using the `qiime diversity alpha-rarefaction` visualizer to evaluate alpha diversity as a function of sequencing depth.
 
@@ -431,20 +431,115 @@ This is especially important when comparing groups using metadata because:
 Therefore, both plots should be evaluated together when selecting the optimal rarefaction depth.
 
 
-## 7 . Taxonomic Classification
+### 7 . Taxonomic Classification
 
-Taxonomic assignment was performed to identify microbial composition across samples.
+To explore the taxonomic composition of the samples, taxonomy was assigned to the representative sequences (`FeatureData[Sequence]`) generated after DADA2 denoising.
 
-### 8. Visualization
+Taxonomic classification was performed using the `q2-feature-classifier` plugin with a pre-trained **Naive Bayes classifier**.
 
-Final results were visualized using:
+The classifier used in this project was trained on:
 
-* Taxonomy barplots
-* Rarefaction plots
-* Alpha diversity plots
-* PCoA plots
-* Heatmaps
-* Comparative abundance graphs
+**Greengenes2 2024.09 full-length reference sequences**
+
+This classifier was applied to the representative sequences to identify the taxonomic composition of the microbial communities across samples.
+
+---
+
+## Download Pre-trained Classifier
+
+Download the classifier using:
+
+```bash id="bq0w6x"
+wget https://data.qiime2.org/classifiers/sklearn-1.4.2/greengenes2/2024.09.backbone.full-length.nb.sklearn-1.4.2.qza
+```
+
+You may rename the downloaded file if needed for easier usage.
+
+Example:
+
+```text id="mzok0v"
+2024.09.backbone.full-length.nb.sklearn-1.4.2.qza
+```
+
+---
+
+## Assign Taxonomy
+
+Run the following command:
+
+```bash id="g4u5py"
+qiime feature-classifier classify-sklearn \
+  --i-classifier 2024.09.backbone.full-length.nb.sklearn-1.4.2.qza \
+  --i-reads representative-sequences.qza \
+  --o-classification taxonomy.qza
+```
+
+This will generate:
+
+```text id="u6vmh2"
+taxonomy.qza
+```
+
+---
+
+## Visualize Taxonomic Classification
+
+To generate a visualization of the taxonomy assignments:
+
+```bash id="c2i6xj"
+qiime metadata tabulate \
+  --m-input-file taxonomy.qza \
+  --o-visualization taxonomy.qzv
+```
+
+This will generate:
+
+```text id="5j2jhg"
+taxonomy.qzv
+```
+
+The `taxonomy.qzv` file provides a detailed mapping of feature IDs to their assigned taxonomy and can be viewed using QIIME2 View.
+
+
+### 8. Taxonomic Composition Visualization using Bar Plots
+
+After assigning taxonomy to the representative sequences, the taxonomic composition of the samples can be explored using interactive taxonomy bar plots.
+
+These bar plots provide a visual representation of the relative abundance of microbial taxa across all samples and help compare microbial community composition between different sample groups.
+
+The visualization allows taxonomic exploration at multiple levels, including:
+
+* Phylum
+* Class
+* Order
+* Family
+* Genus
+* Species (when available)
+
+This makes it easier to identify dominant taxa and observe differences across environmental samples.
+
+---
+
+## Generate Taxonomy Bar Plots
+
+Run the following command:
+
+```bash id="8w8w0e"
+qiime taxa barplot \
+  --i-table table.qza \
+  --i-taxonomy taxonomy.qza \
+  --m-metadata-file sample-metadata.tsv \
+  --o-visualization taxa-bar-plots.qzv
+```
+
+This will generate:
+
+```text id="7l5z5v"
+taxa-bar-plots.qzv
+```
+
+The resulting visualization can be viewed using QIIME2 View and allows interactive exploration of taxonomic abundance across samples.
+
 
 ---
 
