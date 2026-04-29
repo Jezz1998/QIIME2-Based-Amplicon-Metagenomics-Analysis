@@ -114,15 +114,89 @@ You can view this file using QIIME2 View:
 
 https://view.qiime2.org
 
-### 2. Quality Control using DADA2
+### 2. Sequence Quality Control and Feature Table Construction using DADA2
+
+Multiple denoising parameter combinations were tested to optimize sequence retention and quality filtering.
+The following parameters produced the maximum yield and were selected for downstream analysis.
 
 DADA2 was used for:
 
-* Quality filtering
-* Denoising
-* Chimera removal
-* Feature table generation
-* Representative sequence generation
+Quality filtering
+Denoising
+Chimera removal
+Feature table generation
+Representative sequence generation
+
+Run the following command:
+
+qiime dada2 denoise-paired \
+  --i-demultiplexed-seqs paired-end-demux.qza \
+  --p-trim-left-f 40 \
+  --p-trim-left-r 40 \
+  --p-trunc-len-f 0 \
+  --p-trunc-len-r 285 \
+  --o-representative-sequences representative-sequences.qza \
+  --o-table table.qza \
+  --o-denoising-stats denoising-stats.qza
+
+This will generate:
+
+representative-sequences.qza
+table.qza
+denoising-stats.qza
+
+## Feature Table and Feature Data Summaries
+
+After the quality filtering step is completed, it is important to explore the resulting data using summary visualizations.
+
+These summaries help to:
+
+* Determine how many sequences are associated with each sample
+* Examine how many sequences are associated with each feature (ASV)
+* View histograms of feature and sample distributions
+* Access summary statistics of the feature table
+* Map feature IDs to their representative sequences
+* Easily BLAST representative sequences against the NCBI nt database
+* Evaluate DADA2 denoising performance, including:
+
+  * Percentage of sequences passing quality filtering
+  * Denoised reads
+  * Merged reads
+  * Non-chimeric reads from total input sequences
+
+### a. DADA2 Denoising Statistics Summary
+
+```bash id="ngg2cw"
+qiime metadata tabulate \
+  --m-input-file denoising-stats.qza \
+  --o-visualization denoising-stats.qzv
+```
+
+### b. Feature Table Summary
+
+```bash id="xvweja"
+qiime feature-table summarize \
+  --i-table table.qza \
+  --o-visualization table.qzv \
+  --m-sample-metadata-file sample-metadata.tsv
+```
+
+### c. Representative Sequences Summary
+
+```bash id="nmwbm6"
+qiime feature-table tabulate-seqs \
+  --i-data representative-sequences.qza \
+  --o-visualization representative-sequences.qzv
+```
+
+This will generate:
+
+```text id="g6u6ho"
+denoising-stats.qzv
+table.qzv
+representative-sequences.qzv
+```
+
 
 ### 3. Phylogenetic Tree Construction
 
