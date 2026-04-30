@@ -549,14 +549,10 @@ The resulting visualization can be viewed using QIIME2 View and allows interacti
 QIIME2-Analysis/
 │
 ├── README.md
-├── requirements.txt
 ├── environment.yml
-├── metadata/
-├── scripts/
-├── results/
-├── figures/
-├── docs/
-└── LICENSE
+├── Metadata/
+├── QIIME2-Amplicon-2024.10 Installation.md
+├── Results/
 ```
 
 ---
