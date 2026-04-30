@@ -1,0 +1,11 @@
+sample-id	forward-absolute-filepath	reverse-absolute-filepath
+sample-1	/path/to/project/sample1_forward.fastq.gz	/path/to/project/sample1_reverse.fastq.gz
+sample-2	/path/to/project/sample2_forward.fastq.gz	/path/to/project/sample2_reverse.fastq.gz
+sample-3	/path/to/project/sample3_forward.fastq.gz	/path/to/project/sample3_reverse.fastq.gz
+sample-4	/path/to/project/sample4_forward.fastq.gz	/path/to/project/sample4_reverse.fastq.gz
+sample-5	/path/to/project/sample5_forward.fastq.gz	/path/to/project/sample5_reverse.fastq.gz
+sample-6	/path/to/project/sample6_forward.fastq.gz	/path/to/project/sample6_reverse.fastq.gz
+sample-7	/path/to/project/sample7_forward.fastq.gz	/path/to/project/sample7_reverse.fastq.gz
+sample-8	/path/to/project/sample8_forward.fastq.gz	/path/to/project/sample8_reverse.fastq.gz
+sample-9	/path/to/project/sample9_forward.fastq.gz	/path/to/project/sample9_reverse.fastq.gz
+sample-10	/path/to/project/sample10_forward.fastq.gz	/path/to/project/sample10_reverse.fastq.gz
