@@ -4,14 +4,14 @@ Two options are provided to set up the QIIME2 environment for this project.
 
 ---
 
-### Option 1: Exact Reproducibility (Recommended)
+### Option 1: Exact Reproducibility
 
 This option recreates the exact software environment used in this analysis, ensuring consistent and reproducible results.
 
 #### Create the Environment
 
 ```bash id="r6m1xv"
-conda env create -f environment_exact.yml
+conda env create -f environment.yml
 ```
 
 #### Activate the Environment
